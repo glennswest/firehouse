@@ -11,6 +11,7 @@ stairsize = 5;
 
 backwalloffset = wallthickness + roomsize + wallthickness + roomsize + wallthickness;
 interiorwallsize = roomsize + wallthickness + roomsize + wallthickness;
+halfinteriorwallsize = wallthickness + roomsize + wallthickness;
 farsidewallposition = wallthickness + roomsize + wallthickness + roomsize;
 
 module bfwall()
@@ -21,6 +22,11 @@ module bfwall()
 module midsidewall()
 {
      cube([wallthickness * scalefactor,interiorwallsize*scalefactor,wallheight*scalefactor]);
+}
+
+module midhalfsidewall()
+{
+     cube([wallthickness * scalefactor,halfinteriorwallsize*scalefactor,wallheight*scalefactor]);
 }
 
 module midroomdivider()
@@ -63,12 +69,10 @@ module interiordoubledoor()
 
 }
 
-module studykitchenwall()
+module storageroom()
 {
-    difference(){
-         midsidewall();
-         translate([.7 * scalefactor,2 * scalefactor,0]) interiordoubledoor();
-         }
+       cube([13 * scalefactor, wallthickness * scalefactor, wallheight * scalefactor]);
+       cube([wallthickness * scalefactor, 13 * scalefactor, wallheight * scalefactor]);
 
 }
 
@@ -77,7 +81,11 @@ translate([0,0,0]) bfwall(); // Front Wall
 translate([0,backwalloffset * scalefactor,0]) bfwall();
 midwallposition = wallthickness + roomsize;
 translate([0,wallthickness * scalefactor,0]) midsidewall();
-translate([midwallposition * scalefactor,wallthickness * scalefactor,0]) studykitchenwall();
+translate([midwallposition * scalefactor,wallthickness * scalefactor,0]) midsidewall();
+// Hallway
+midhalfwallposition = wallthickness + roomsize;
+translate([(midhalfwallposition - 7) * scalefactor,(wallthickness + roomsize + wallthickness) * scalefactor,0]) midhalfsidewall();
+
 translate([farsidewallposition * scalefactor,wallthickness * scalefactor,0]) midsidewall();
 roomdivposition = wallthickness + roomsize + wallthickness;
 translate([wallthickness * scalefactor,roomdivposition * scalefactor,0]) midroomdivider();
@@ -98,6 +106,13 @@ firstbathroompositiony = wallthickness + roomsize + wallthickness + roomsize + w
 
 translate([firstbathroompositionx * scalefactor,firstbathroompositiony * scalefactor,0]) rotate([0,0,-90]) bathroom();
 
+secondbathroompositionx = wallthickness + roomsize - bathroomwidth - wallthickness -  10;
+secondbathroompositiony = wallthickness + roomsize + wallthickness + wallthickness;
+
+translate([secondbathroompositionx * scalefactor,secondbathroompositiony * scalefactor,0]) bathroom();
+
+
+
 closetpositionx = wallthickness + roomsize + wallthickness + 1;
 closetpositiony = wallthickness + roomsize + wallthickness;
 translate([closetpositionx * scalefactor, closetpositiony * scalefactor, 0]) closet();
@@ -107,3 +122,7 @@ translate([closetpositionx * scalefactor, closetpositiony * scalefactor, 0]) clo
 bedpositionx = wallthickness + roomsize + wallthickness + 1;
 bedpositiony = wallthickness + roomsize + wallthickness + roomsize - 9;
 %translate([bedpositionx * scalefactor, bedpositiony * scalefactor, 0]) kingbed();
+
+storageroomx = wallthickness + bathroomwidth - 2;
+storageroomy = wallthickness + roomsize + wallthickness + roomsize - 12;
+translate([storageroomx * scalefactor,storageroomy * scalefactor,0]) storageroom();
