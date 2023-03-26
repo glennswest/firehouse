@@ -107,3 +107,13 @@ translate([closetpositionx * scalefactor, closetpositiony * scalefactor, 0]) clo
 bedpositionx = wallthickness + roomsize + wallthickness + 1;
 bedpositiony = wallthickness + roomsize + wallthickness + roomsize - 9;
 %translate([bedpositionx * scalefactor, bedpositiony * scalefactor, 0]) kingbed();
+
+
+translate([roomsize * scalefactor,-40,0]) text("Front - Deck is here",size = 20);
+translate([roomsize * scalefactor - 100,400,0]) text("Back",size = 20);
+
+translate([-20,roomsize * scalefactor / 2 ,0]) rotate([0,0,90]) text("Shop side",size = 20);
+translate([-50,roomsize * scalefactor / 2 + 20 ,0]) rotate([0,0,90]) text("Stairs To Deck",size = 15);
+
+translate([420,3 * roomsize * scalefactor / 2 ,0]) rotate([0,0,-90]) text("Garage Side",size = 20);
+     

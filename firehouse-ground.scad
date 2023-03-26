@@ -34,6 +34,11 @@ module midroomdivider()
      cube([roomsize * scalefactor,wallthickness * scalefactor,wallheight*scalefactor]);
 }
 
+module utilityroomdivider()
+{
+     cube([(roomsize - 11.5) * scalefactor,wallthickness * scalefactor,wallheight*scalefactor]);
+}
+
 module elevator()
 {
      cube([elevatorsize * scalefactor,elevatorsize * scalefactor, wallheight*scalefactor]);
@@ -76,20 +81,30 @@ module storageroom()
 
 }
 
+module hallwayopening()
+{
+    cube([(wallthickness + 2) * scalefactor, 6 * scalefactor, 8 * scalefactor]);
+
+}
 
 translate([0,0,0]) bfwall(); // Front Wall
 translate([0,backwalloffset * scalefactor,0]) bfwall();
 midwallposition = wallthickness + roomsize;
 translate([0,wallthickness * scalefactor,0]) midsidewall();
-translate([midwallposition * scalefactor,wallthickness * scalefactor,0]) midsidewall();
+difference(){
+    translate([midwallposition * scalefactor,wallthickness * scalefactor,0]) midsidewall();
+    translate([(midwallposition * scalefactor)-1,(wallthickness + roomsize + wallthickness - 7.5) * scalefactor,0]) hallwayopening(); 
+    }
 // Hallway
 midhalfwallposition = wallthickness + roomsize;
 translate([(midhalfwallposition - 7) * scalefactor,(wallthickness + roomsize + wallthickness) * scalefactor,0]) midhalfsidewall();
 
 translate([farsidewallposition * scalefactor,wallthickness * scalefactor,0]) midsidewall();
 roomdivposition = wallthickness + roomsize + wallthickness;
-translate([wallthickness * scalefactor,roomdivposition * scalefactor,0]) midroomdivider();
+translate([(wallthickness + 5) * scalefactor,roomdivposition * scalefactor,0]) utilityroomdivider();
+translate([wallthickness * scalefactor,(roomdivposition - 8) * scalefactor,0]) midroomdivider();
 translate([(wallthickness + roomsize + wallthickness) * scalefactor,roomdivposition * scalefactor,0]) midroomdivider();
+translate([(wallthickness + roomsize + wallthickness) * scalefactor,(roomdivposition - 8) * scalefactor,0]) midroomdivider();
 elevatorpositionx = wallthickness + roomsize + wallthickness + roomsize - elevatorsize;
 elevatorpositiony = wallthickness + roomsize + wallthickness - (elevatorsize / 2);
 
@@ -121,8 +136,31 @@ translate([closetpositionx * scalefactor, closetpositiony * scalefactor, 0]) clo
 
 bedpositionx = wallthickness + roomsize + wallthickness + 1;
 bedpositiony = wallthickness + roomsize + wallthickness + roomsize - 9;
-%translate([bedpositionx * scalefactor, bedpositiony * scalefactor, 0]) kingbed();
+translate([bedpositionx * scalefactor, bedpositiony * scalefactor, 0]) kingbed();
 
 storageroomx = wallthickness + bathroomwidth - 2;
 storageroomy = wallthickness + roomsize + wallthickness + roomsize - 12;
 translate([storageroomx * scalefactor,storageroomy * scalefactor,0]) storageroom();
+
+ht = 5;
+for(x = [ 0 : 1 : 55] ){
+      if (x % 4){ 
+         echo ("H5");
+         ht = 5;
+         translate([x * scalefactor,-10, 0]) cube([1,3,ht]);
+       } else {
+         echo ("H10");
+         ht = 10;
+         translate([x * scalefactor,-10, 0]) cube([1,3,ht]);
+       }
+     
+     }
+     
+translate([roomsize * scalefactor,-40,0]) text("Front",size = 20);
+translate([roomsize * scalefactor - 100,400,0]) text("Back - Door To Porch",size = 20);
+
+translate([-20,roomsize * scalefactor / 2 ,0]) rotate([0,0,90]) text("Door To Shop",size = 20);
+translate([-50,roomsize * scalefactor / 2 + 20 ,0]) rotate([0,0,90]) text("Stairs To Deck",size = 15);
+
+translate([420,3 * roomsize * scalefactor / 2 ,0]) rotate([0,0,-90]) text("Door To Garage",size = 20);
+     
